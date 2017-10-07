@@ -3,212 +3,216 @@ package first;
 import java.util.Scanner;
 
 public class f {
-	
-	
-	static int total1 = 0; 
-	static int total2 = 0; 
-	static int total301 = 0, total302 = 0, total303 = 0; 
+
+	static int totalPizza = 0;
+	static int totalChickens = 0;
+	static int totalOrange = 0, totalCoke = 0, totalWater = 0;
 	static int total = 0;
 	
-	
-	public static int choicePizza(int c, int q){
-		total1 += 250 * q;
-		total += total1;
-		return total1;
+
+	public static int choicePizza(int c, int q, int[] prices) {
+		totalPizza += prices[0] * q;
+		return totalPizza;
 	}
-	public static int choiceChicken(int c, int q){
-		total2 = 120 * q;
-		total += total2;
-		return total2;
+
+	public static int choiceChicken(int c, int q, int[] prices) {
+		totalChickens += prices[1] * q;
+		return totalChickens;
 	}
-	public static int choiceOrange(int c, int q){
-		total301 = 65 * q;
-		total += total301;
-		return total301;
+
+	public static int choiceOrange(int c, int q, int[] prices) {
+		totalOrange += prices[2] * q;
+		return totalOrange;
 	}
-	public static int choiceCoke(int c, int q){
-		total302 = 45 * q;
-		total += total302;
-		return total302;
+
+	public static int choiceCoke(int c, int q, int[] prices) {
+		totalCoke += prices[3] * q;
+		return totalCoke;
 	}
-	public static int choiceWater(int c ,int q){
-		total303 = 20 * q;
-		total += total303;
-		return total303;
+
+	public static int choiceWater(int c, int q, int[] prices) {
+		totalWater += prices[4] * q;
+		return totalWater;
 	}
-	public static boolean choice5(int choice){
-		
-		if (choice != 5){
+
+	public static boolean choice5(int choice) {
+
+		if (choice != 5) {
 			return true;
 		}
 		return false;
-		
+
 	}
 	
+	public static String choiceToString(int choice, String[] menus) {
+		if (choice == 1) {
+			return menus[0];
+		}
+		if (choice == 2) {
+			return menus[1];
+		}
+		if (choice == 3) {
+			return menus[2];
+		}
+		if (choice == 4) {
+			return menus[3];
+		}
+		return null;
+	}
 
+	public static String subChoice(int subChoice, String[] choiceBeverages) {
+		if (subChoice == 1) {
+			return choiceBeverages[0];
+		}
+		if (subChoice == 2) {
+			return choiceBeverages[1];
+		}
+		if (subChoice == 3) {
+			return choiceBeverages[2];
+		}
+		return null;
+	}
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
 		System.out.println("--------- Welcome to SKE Restaurant ---------");
 		System.out.printf("1.) Pizza\t 250 Baht.\n");
 		System.out.printf("2.) Chickens\t 120 Baht.\n");
-		System.out.printf("3.) Beverage\t 45 Baht.\n");
+		System.out.printf("3.) Beverages\t \n");
 		System.out.printf("4.) Total\t\n");
 		System.out.printf("5.) Exit\t\n");
-
+		
 		int choice;
 		int quantity;
-		int count1 = 0; int count2 = 0; int count301 = 0 ; int count302 = 0; int count303 = 0;
-		int counter1 = 0; int counter2 = 0; int counter301 = 0; int counter302 = 0; int counter303 = 0; 
-		int tcount = 0;
 		
+		String[] list = { "Pizza", "Chickens", "Beverages", "totalPrice" };
+		String[] choiceBeverages = { "Orange juice", "Coke", "Water" };
+		int[] prices = { 250, 120, 65, 45, 20 };
+		int[] totalQuantity = new int[5];
+
 		do {
 			System.out.print("Enter your Choice: ");
 			choice = sc.nextInt();
 			if (choice5(choice)) {
-				switch (choice) {
+				switch (choiceToString(choice,list)) {
 
-				case 1:
+				case "Pizza":
 					System.out.print("Enter Quantity: ");
 					quantity = sc.nextInt();
 					System.out.println("");
-					choicePizza(choice , quantity);
-					count1 += quantity;
-					counter1++;
-					tcount++;
+					choicePizza(choice, quantity, prices);
+					totalQuantity[0] += quantity;
 					break;
-				case 2:
+					
+				case "Chickens":
 					System.out.print("Enter Quantity: ");
 					quantity = sc.nextInt();
 					System.out.println("");
-					choiceChicken(choice, quantity);
-					count2 += quantity;
-					counter2++;
-					tcount++;
+					choiceChicken(choice, quantity, prices);
+					totalQuantity[1] += quantity;
 					break;
-				case 3:
+					
+				case "Beverages":
 					System.out.print("3.1) Orange juice\t 65 baht.\n");
 					System.out.print("3.2) Coke\t\t 45 baht.\n");
 					System.out.print("3.3) Mineral water\t 20 baht.\n");
 					System.out.print("Choose your drink: ");
-					int subchoice = sc.nextInt();
+					int subChoice = sc.nextInt();
 					System.out.print("Enter Quantity: ");
 					quantity = sc.nextInt();
 					System.out.println("");
-					if (subchoice == 1){
-						choiceOrange(subchoice, quantity);
-						count301 += quantity;
-						counter301++;
-						tcount++;
+					if (subChoice(subChoice,choiceBeverages).equals("Orange juice")) {
+						choiceOrange(subChoice, quantity, prices);
+						totalQuantity[2] += quantity;
 						break;
 					}
-					if (subchoice == 2){
-						choiceCoke(choice, quantity);
-						count302 += quantity;
-						counter302++;
-						tcount++;
+					if (subChoice(subChoice,choiceBeverages).equals("Coke")) {
+						choiceCoke(choice, quantity, prices);
+						totalQuantity[3] += quantity;
 						break;
 					}
-					if (subchoice == 3){
-						choiceWater(choice, quantity);
-						count303 += quantity;
-						counter303++;
-						tcount++;
+					if (subChoice(subChoice,choiceBeverages).equals("Water")) {
+						choiceWater(choice, quantity, prices);
+						totalQuantity[4] += quantity;
 						break;
 					}
-				case 4:
+				case "totalPrice":
+					total = totalPizza + totalChickens + totalOrange + totalCoke + totalWater;
 					System.out.println("+------ Menu ------+-- Qty --+-- Price --+");
-					if (total1 >= 250){
-						for (int i = 1; i <= 1 ; i++){
-							System.out.printf("| %s\t\t   |%9d|%11d|\n", "Pizza" , count1, total1);
-						}
+					if (totalPizza >= 250) {
+						System.out.printf("| %s\t\t   |%9d|%11d|\n", "Pizza", totalQuantity[0], totalPizza);
 					}
-					if (total2 >= 120){
-						for (int i = 1; i <= 1 ; i++){
-							System.out.printf("| %s\t   |%9d|%11d|\n", "Chickens" , count2, total2);
-						}
+					if (totalChickens >= 120) {
+						System.out.printf("| %s\t   |%9d|%11d|\n", "Chickens", totalQuantity[1], totalChickens);
 					}
-					if (total301 >= 65){
-						for (int i = 1; i <= 1 ; i++){
-							System.out.printf("| %s\t   |%9d|%11d|\n", "Orange juice" , count301, total301);
-						}
+					if (totalOrange >= 65) {
+						System.out.printf("| %s\t   |%9d|%11d|\n", "Orange juice", totalQuantity[2], totalOrange);
 					}
-					if (total302 >= 45){
-						for (int i = 1; i <= 1 ; i++){
-							System.out.printf("| %s\t\t   |%9d|%11d|\n", "Coke" , count302, total302);
-						}
+					if (totalCoke >= 45) {
+						System.out.printf("| %s\t\t   |%9d|%11d|\n", "Coke", totalQuantity[3], totalCoke);
 					}
-					if (total303 >= 20){
-						for (int i = 1; i <= 1 ; i++){
-							System.out.printf("| %s\t   |%9d|%11d|\n", "Mineral Water" , count303, total303);
-						}
+					if (totalWater >= 20) {
+						System.out.printf("| %s\t   |%9d|%11d|\n", "Mineral Water", totalQuantity[4], totalWater);
 					}
-					
-					
+
 					System.out.println("+------------------+---------+-----------+");
-					
 					System.out.printf("| Total\t\t\t     |%11d|\n", total);
 					System.out.println("+----------------------------+-----------+");
 					System.out.println("");
-					
-					
-					
+
 				}
 			}
 
 		} while (choice5(choice));
 		System.out.print("Received Amount : ");
 		int amount = sc.nextInt();
-		if (amount == total){
+		if (amount == total) {
 			System.out.print("There is no more change for you. :)");
-		}
-		else if (amount > total){
-			System.out.printf("Your change is %d.\n", amount-total);
-		}
-		else {
+		} else if (amount > total) {
+			System.out.printf("Your change is %d.\n", amount - total);
+		} else {
 			System.out.printf("Please input more money !\n");
 			int aAmount = 0;
 			int count = 0;
 			int bAmount = 0;
-			int cAmount =0;
-			do{
-				if (count == 0){
-				System.out.printf("Your total is %d please add %d more.\n",total, total-amount);
-				System.out.print("+ ");
-				aAmount = sc.nextInt();
-				if ((aAmount) == (total-amount)){
-					System.out.println("There is no more change for you. :)");
-					System.out.println("");
-					break;
-				}
-				else if ((aAmount) > (total-amount)){
-					System.out.printf("Your change is %d.\n",  aAmount - (total-amount));
-					
-				}
-				count++;
-				} else {
-					System.out.printf("Your total is %d please add %d more.\n",total, total-amount-aAmount-cAmount);
+			int cAmount = 0;
+
+			do {
+				if (count == 0) {
+					System.out.printf("Your total is %d please add %d more.\n", total, total - amount);
 					System.out.print("+ ");
-					bAmount = sc.nextInt();
-					if ((bAmount) == (total-amount-aAmount-cAmount) ){
+					aAmount = sc.nextInt();
+					if ((aAmount) == (total - amount)) {
 						System.out.println("There is no more change for you. :)");
 						System.out.println("");
 						break;
-					}
-					else if ((bAmount) > (total-amount-aAmount-cAmount)){
-						System.out.printf("Your change is %d.\n",  bAmount - (total-amount-aAmount-cAmount));
-						break;
+					} else if ((aAmount) > (total - amount)) {
+						System.out.printf("Your change is %d.\n", aAmount - (total - amount));
 						
+					}
+					count++;
+				} else if (count > 0){
+					int zTotal = total - amount - aAmount;
+					System.out.printf("Your total is %d please add %d more.\n", total, zTotal - cAmount);
+					System.out.print("+ ");
+					bAmount = sc.nextInt();
+					if ((bAmount) == (zTotal - cAmount)) {
+						System.out.println("There is no more change for you. :)");
+						System.out.println("");
+						break;
+					} else if ((bAmount) > (zTotal - cAmount)) {
+						System.out.printf("Your change is %d.\n", bAmount - (zTotal - cAmount));
+						break;
+
+					} else {
+						cAmount += bAmount;
+					}
+					
 				}
-					cAmount += bAmount;
-				}
-			}while (bAmount <= (total-amount-aAmount-cAmount));
+			} while (0 < 1);
 		}
-			System.out.print("===== Thank you =====");
-			
-			
-		
+		System.out.print("===== Thank you =====");
+
 	}
 
 }
-
