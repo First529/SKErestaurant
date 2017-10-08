@@ -1,6 +1,13 @@
 package first;
 
 import java.util.Scanner;
+/** 
+ * Main class for SKE restaurant order taking application.
+ * It displays different dishes and beverages to choose from the menu.
+ * When done, it asks you to input the money in order to complete the purchase.
+ * 
+ * @author Dechabhol Kotheeranurak
+ */
 
 public class f {
 
@@ -8,6 +15,11 @@ public class f {
 	static int totalChickens = 0;
 	static int totalOrange = 0, totalCoke = 0, totalWater = 0;
 	static int total = 0;
+	
+	private static final String[] list = { "Pizza", "Chickens", "Beverages", "totalPrice" };
+	private static final String[] choiceBeverages = { "Orange juice", "Coke", "Water" };
+	private static final int[] prices = { 250, 120, 65, 45, 20 };
+	private static final int[] totalQuantity = new int[5];
 	
 
 	public static int choicePizza(int c, int q, int[] prices) {
@@ -84,11 +96,6 @@ public class f {
 		
 		int choice;
 		int quantity;
-		
-		String[] list = { "Pizza", "Chickens", "Beverages", "totalPrice" };
-		String[] choiceBeverages = { "Orange juice", "Coke", "Water" };
-		int[] prices = { 250, 120, 65, 45, 20 };
-		int[] totalQuantity = new int[5];
 
 		do {
 			System.out.print("Enter your Choice: ");
@@ -211,6 +218,7 @@ public class f {
 				}
 			} while (0 < 1);
 		}
+		System.out.println();
 		System.out.print("===== Thank you =====");
 
 	}
