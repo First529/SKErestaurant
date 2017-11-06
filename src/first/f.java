@@ -1,176 +1,65 @@
 package first;
 
 import java.util.Scanner;
-/** 
- * Main class for SKE restaurant order taking application.
- * It displays different dishes and beverages to choose from the menu.
- * When done, it asks you to input the money in order to complete the purchase.
+
+/**
+ * Main class for SKE restaurant order taking application. It displays different
+ * dishes and beverages to choose from the menu. When done, it asks you to input
+ * the money in order to complete the purchase.
  * 
  * @author Dechabhol Kotheeranurak
  */
 
 public class f {
 
-	static int totalPizza = 0;
-	static int totalChickens = 0;
-	static int totalOrange = 0, totalCoke = 0, totalWater = 0;
-	static int total = 0;
-	
-	private static final String[] list = { "Pizza", "Chickens", "Beverages", "totalPrice" };
-	private static final String[] choiceBeverages = { "Orange juice", "Coke", "Water" };
-	private static final int[] prices = { 250, 120, 65, 45, 20 };
-	private static final int[] totalQuantity = new int[5];
-	
+	static double total = 0.0;
 
-	public static int choicePizza(int c, int q, int[] prices) {
-		totalPizza += prices[0] * q;
-		return totalPizza;
-	}
+	static RestaurantManager manager = new RestaurantManager();
+	static Scanner sc = new Scanner(System.in);
 
-	public static int choiceChicken(int c, int q, int[] prices) {
-		totalChickens += prices[1] * q;
-		return totalChickens;
-	}
 
-	public static int choiceOrange(int c, int q, int[] prices) {
-		totalOrange += prices[2] * q;
-		return totalOrange;
-	}
+	public static boolean choiceNum(String choice) {
 
-	public static int choiceCoke(int c, int q, int[] prices) {
-		totalCoke += prices[3] * q;
-		return totalCoke;
-	}
-
-	public static int choiceWater(int c, int q, int[] prices) {
-		totalWater += prices[4] * q;
-		return totalWater;
-	}
-
-	public static boolean choice5(int choice) {
-
-		if (choice != 5) {
+		try {
+			Integer.parseInt(choice);
 			return true;
+		} catch (Exception e) {
+			return false;
 		}
-		return false;
 
+	}
+
+	public static void printMenu() {
+
+		System.out.println("--------- Welcome to SKE Restaurant ---------");
+		for (int i = 0; i < RestaurantManager.menuItems.size(); i++) {
+			System.out.printf("%d.) %s\t%.2f Baht.\n", i + 1, RestaurantManager.menuItems.get(i), RestaurantManager.prices.get(i));
+		}
+		System.out.println("");
+		System.out.printf("[T] Total\t\n");
+		System.out.printf("[X] Exit\t\n");
+	}
+
+	public static void printReceipt() {
+		System.out.println("+------ Menu ------+-- Qty --+-- Price --+");
+		for (int i = 0; i < RestaurantManager.quantity.size(); i++) {
+			if (RestaurantManager.quantity.get(i) > 0) {
+			System.out.printf("| %-17s|%9d|%11.2f|\n", RestaurantManager.menuItems.get(i),
+					RestaurantManager.quantity.get(i),
+					RestaurantManager.quantity.get(i) * RestaurantManager.prices.get(i));
+			}
+		}
+		total = 0.0;
+		for (int j = 0; j < RestaurantManager.quantity.size(); j++) {
+			total += RestaurantManager.quantity.get(j) * RestaurantManager.prices.get(j);
+		}
+		System.out.println("+------------------+---------+-----------+");
+		System.out.printf("| Total\t\t\t     |%11.2f|\n", total);
+		System.out.println("+----------------------------+-----------+");
+		System.out.println("");
 	}
 	
-	public static String choiceToString(int choice, String[] menus) {
-		if (choice == 1) {
-			return menus[0];
-		}
-		if (choice == 2) {
-			return menus[1];
-		}
-		if (choice == 3) {
-			return menus[2];
-		}
-		if (choice == 4) {
-			return menus[3];
-		}
-		return null;
-	}
-
-	public static String subChoice(int subChoice, String[] choiceBeverages) {
-		if (subChoice == 1) {
-			return choiceBeverages[0];
-		}
-		if (subChoice == 2) {
-			return choiceBeverages[1];
-		}
-		if (subChoice == 3) {
-			return choiceBeverages[2];
-		}
-		return null;
-	}
-	public static void main(String[] args) {
-
-		Scanner sc = new Scanner(System.in);
-		System.out.println("--------- Welcome to SKE Restaurant ---------");
-		System.out.printf("1.) Pizza\t 250 Baht.\n");
-		System.out.printf("2.) Chickens\t 120 Baht.\n");
-		System.out.printf("3.) Beverages\t \n");
-		System.out.printf("4.) Total\t\n");
-		System.out.printf("5.) Exit\t\n");
-		
-		int choice;
-		int quantity;
-
-		do {
-			System.out.print("Enter your Choice: ");
-			choice = sc.nextInt();
-			if (choice5(choice)) {
-				switch (choiceToString(choice,list)) {
-
-				case "Pizza":
-					System.out.print("Enter Quantity: ");
-					quantity = sc.nextInt();
-					System.out.println("");
-					choicePizza(choice, quantity, prices);
-					totalQuantity[0] += quantity;
-					break;
-					
-				case "Chickens":
-					System.out.print("Enter Quantity: ");
-					quantity = sc.nextInt();
-					System.out.println("");
-					choiceChicken(choice, quantity, prices);
-					totalQuantity[1] += quantity;
-					break;
-					
-				case "Beverages":
-					System.out.print("3.1) Orange juice\t 65 baht.\n");
-					System.out.print("3.2) Coke\t\t 45 baht.\n");
-					System.out.print("3.3) Mineral water\t 20 baht.\n");
-					System.out.print("Choose your drink: ");
-					int subChoice = sc.nextInt();
-					System.out.print("Enter Quantity: ");
-					quantity = sc.nextInt();
-					System.out.println("");
-					if (subChoice(subChoice,choiceBeverages).equals("Orange juice")) {
-						choiceOrange(subChoice, quantity, prices);
-						totalQuantity[2] += quantity;
-						break;
-					}
-					if (subChoice(subChoice,choiceBeverages).equals("Coke")) {
-						choiceCoke(choice, quantity, prices);
-						totalQuantity[3] += quantity;
-						break;
-					}
-					if (subChoice(subChoice,choiceBeverages).equals("Water")) {
-						choiceWater(choice, quantity, prices);
-						totalQuantity[4] += quantity;
-						break;
-					}
-				case "totalPrice":
-					total = totalPizza + totalChickens + totalOrange + totalCoke + totalWater;
-					System.out.println("+------ Menu ------+-- Qty --+-- Price --+");
-					if (totalPizza >= 250) {
-						System.out.printf("| %s\t\t   |%9d|%11d|\n", "Pizza", totalQuantity[0], totalPizza);
-					}
-					if (totalChickens >= 120) {
-						System.out.printf("| %s\t   |%9d|%11d|\n", "Chickens", totalQuantity[1], totalChickens);
-					}
-					if (totalOrange >= 65) {
-						System.out.printf("| %s\t   |%9d|%11d|\n", "Orange juice", totalQuantity[2], totalOrange);
-					}
-					if (totalCoke >= 45) {
-						System.out.printf("| %s\t\t   |%9d|%11d|\n", "Coke", totalQuantity[3], totalCoke);
-					}
-					if (totalWater >= 20) {
-						System.out.printf("| %s\t   |%9d|%11d|\n", "Mineral Water", totalQuantity[4], totalWater);
-					}
-
-					System.out.println("+------------------+---------+-----------+");
-					System.out.printf("| Total\t\t\t     |%11d|\n", total);
-					System.out.println("+----------------------------+-----------+");
-					System.out.println("");
-
-				}
-			}
-
-		} while (choice5(choice));
+	public static void change() {
 		System.out.print("Received Amount : ");
 		int amount = sc.nextInt();
 		if (amount == total) {
@@ -195,11 +84,11 @@ public class f {
 						break;
 					} else if ((aAmount) > (total - amount)) {
 						System.out.printf("Your change is %d.\n", aAmount - (total - amount));
-						
+
 					}
 					count++;
-				} else if (count > 0){
-					int zTotal = total - amount - aAmount;
+				} else if (count > 0) {
+					double zTotal = total - amount - aAmount;
 					System.out.printf("Your total is %d please add %d more.\n", total, zTotal - cAmount);
 					System.out.print("+ ");
 					bAmount = sc.nextInt();
@@ -214,12 +103,39 @@ public class f {
 					} else {
 						cAmount += bAmount;
 					}
-					
+
 				}
 			} while (0 < 1);
 		}
 		System.out.println();
 		System.out.print("===== Thank you =====");
+	}
+
+	public static void main(String[] args) {
+
+		manager.openFile();
+		manager.readFile();
+
+		printMenu();
+
+		String choice;
+		String quantity;
+
+		do {
+			System.out.print("Enter your Choice: ");
+			choice = sc.next();
+			if (choiceNum(choice)) {
+				System.out.print("Enter Quantity: ");
+				quantity = sc.next();
+				System.out.println("");
+				RestaurantManager.quantity.set(Integer.parseInt(choice)-1, RestaurantManager.quantity.get(Integer.parseInt(choice)-1)+ Integer.parseInt(quantity));
+
+			} else if (choice.equalsIgnoreCase("T")) {
+				printReceipt();
+			}
+
+		} while (!choice.equalsIgnoreCase("X"));
+		change();
 
 	}
 

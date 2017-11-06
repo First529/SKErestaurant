@@ -1,0 +1,9 @@
+# 
+# Main dishes
+Pizza ; 250
+Chickens ; 120
+----------------
+# Beverages
+Orange juice ; 65
+Coke ; 45
+Water ; 20
