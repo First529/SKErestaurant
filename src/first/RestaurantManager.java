@@ -1,34 +1,38 @@
 package first;
 
+/**
+ * This class is responsible for open and read file from a text file.
+ * Then it collects data using an arraylist for the Food object.
+ * 
+ * @author Dechabhol Kotheeranurak
+ */
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.*;
 
 public class RestaurantManager {
 	
-	static ArrayList<String> menuItems = new ArrayList<String>();
-	static ArrayList<Double> prices = new ArrayList<Double>();
-	static ArrayList<Integer> quantity = new ArrayList<Integer>();
+	static ArrayList<Food> menu = new ArrayList<Food>();
 	private Scanner sc;
 	
-	public void openFile() {
-		try {
-			sc = new Scanner (new File("src/first/menu.txt"));
-		}
-		catch(Exception e) {
-			System.out.println("Could not find file.");
-		}
+	static final String LOCATION = "first/menu.txt";
+	static ClassLoader loader = RestaurantManager.class.getClassLoader();
+	
+	public InputStream openFile() {
+		InputStream input = loader.getResourceAsStream(LOCATION);
+		
+		return input;
 	}
 	
-	public void readFile() {
+	public void readFile(InputStream temp) {
+		sc = new Scanner(temp);
 		while(sc.hasNextLine()){
 			String x = sc.nextLine();
 			if (x.startsWith("#") || x.startsWith("-")) {
 				x = sc.nextLine();
 			} else {
-				menuItems.add(x.split(";")[0].trim());
-				prices.add(Double.parseDouble(x.split(";")[1].trim()));
-				quantity.add(0);
+				menu.add(new Food(x.split(";")[0].trim(), Double.parseDouble(x.split(";")[1].trim())));
 			}
 		}
 		sc.close();

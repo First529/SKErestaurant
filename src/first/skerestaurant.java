@@ -1,5 +1,6 @@
 package first;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -10,10 +11,13 @@ import java.util.Scanner;
  * @author Dechabhol Kotheeranurak
  */
 
-public class f {
+public class skerestaurant {
 
 	static double total = 0.0;
 
+	static Food[] menu = new Food[RestaurantManager.menu.size()];
+
+	static int[] quantity;
 	static RestaurantManager manager = new RestaurantManager();
 	static Scanner sc = new Scanner(System.in);
 
@@ -30,10 +34,11 @@ public class f {
 
 	public static void printMenu() {
 
+		menu = RestaurantManager.menu.toArray(menu);
+		quantity = new int[menu.length];
 		System.out.println("--------- Welcome to SKE Restaurant ---------");
-		for (int i = 0; i < RestaurantManager.menuItems.size(); i++) {
-			System.out.printf("%d.) %s\t%.2f Baht.\n", i + 1, RestaurantManager.menuItems.get(i),
-					RestaurantManager.prices.get(i));
+		for (int i = 0; i < menu.length; i++) {
+			System.out.printf("%d.) %s\t%.2f Baht.\n", i + 1, menu[i].getName(), menu[i].getPrice());
 		}
 		System.out.println("");
 		System.out.printf("[T] Total\t\n");
@@ -42,16 +47,15 @@ public class f {
 
 	public static void printReceipt() {
 		System.out.println("+------ Menu ------+-- Qty --+-- Price --+");
-		for (int i = 0; i < RestaurantManager.quantity.size(); i++) {
-			if (RestaurantManager.quantity.get(i) > 0) {
-				System.out.printf("| %-17s|%9d|%11.2f|\n", RestaurantManager.menuItems.get(i),
-						RestaurantManager.quantity.get(i),
-						RestaurantManager.quantity.get(i) * RestaurantManager.prices.get(i));
+		for (int i = 0; i < quantity.length; i++) {
+			if (quantity[i] > 0) {
+				System.out.printf("| %-17s|%9d|%11.2f|\n", menu[i].getName(), quantity[i],
+						quantity[i] * menu[i].getPrice());
 			}
 		}
 		total = 0.0;
-		for (int j = 0; j < RestaurantManager.quantity.size(); j++) {
-			total += RestaurantManager.quantity.get(j) * RestaurantManager.prices.get(j);
+		for (int j = 0; j < quantity.length; j++) {
+			total += quantity[j] * menu[j].getPrice();
 		}
 		System.out.println("+------------------+---------+-----------+");
 		System.out.printf("| Total\t\t\t     |%11.2f|\n", total);
@@ -60,40 +64,42 @@ public class f {
 	}
 
 	public static void change() {
+		boolean tf = true;
 		System.out.print("Received Amount : ");
-		int amount = sc.nextInt();
+		double amount = sc.nextDouble();
 		if (amount == total) {
 			System.out.print("There is no more change for you. :)");
 		} else if (amount > total) {
 			System.out.printf("Your change is %.2f.\n", amount - total);
+			
 		} else {
 			System.out.printf("Please input more money !\n");
-			int aAmount = 0;
+			double aAmount = 0;
 			int count = 0;
-			int bAmount = 0;
-			int cAmount = 0;
+			double bAmount = 0;
+			double cAmount = 0;
 
 			do {
 				if (count == 0) {
 					System.out.printf("Your total is %.2f please add %.2f more.\n", total, total - amount);
 					System.out.print("+ ");
-					aAmount = sc.nextInt();
+					aAmount = sc.nextDouble();
 					if ((aAmount) == (total - amount)) {
-						System.out.println("There is no more change for you. :)");
+						System.out.println("There is no change for you. :)");
 						System.out.println("");
 						break;
 					} else if ((aAmount) > (total - amount)) {
 						System.out.printf("Your change is %.2f.\n", aAmount - (total - amount));
-
+						break;
 					}
 					count++;
 				} else if (count > 0) {
 					double zTotal = total - amount - aAmount;
 					System.out.printf("Your total is %.2f please add %.2f more.\n", total, zTotal - cAmount);
 					System.out.print("+ ");
-					bAmount = sc.nextInt();
+					bAmount = sc.nextDouble();
 					if ((bAmount) == (zTotal - cAmount)) {
-						System.out.println("There is no more change for you. :)");
+						System.out.println("There is no change for you. :)");
 						System.out.println("");
 						break;
 					} else if ((bAmount) > (zTotal - cAmount)) {
@@ -105,33 +111,26 @@ public class f {
 					}
 
 				}
-			} while (0 < 1);
+			} while (tf);
 		}
 		System.out.println();
 		System.out.print("===== Thank you =====");
 	}
 
-	public static void main(String[] args) {
-
-		manager.openFile();
-		manager.readFile();
-
-		printMenu();
-
+	public static void inputMoney() {
 		String choice;
-		String quantity;
+		String quan;
 
 		do {
 			System.out.print("Enter your Choice: ");
 			choice = sc.next();
 			if (choiceNum(choice)) {
-				if (Integer.parseInt(choice) <= RestaurantManager.menuItems.size()) {
+				if (Integer.parseInt(choice) <= menu.length) {
 					System.out.print("Enter Quantity: ");
-					quantity = sc.next();
+					quan = sc.next();
 					System.out.println("");
-					RestaurantManager.quantity.set(Integer.parseInt(choice) - 1,
-							RestaurantManager.quantity.get(Integer.parseInt(choice) - 1) + Integer.parseInt(quantity));
-				} else if (Integer.parseInt(choice) > RestaurantManager.menuItems.size()) {
+					quantity[Integer.parseInt(choice) - 1] += Integer.parseInt(quan);
+				} else if (Integer.parseInt(choice) > menu.length) {
 					System.out.println("# Invalid input");
 				}
 			} else if (choice.equalsIgnoreCase("T")) {
@@ -141,6 +140,12 @@ public class f {
 		} while (!choice.equalsIgnoreCase("X"));
 		change();
 
+	}
+
+	public static void main(String[] args) {
+		manager.readFile(manager.openFile());
+		printMenu();
+		inputMoney();
 	}
 
 }
