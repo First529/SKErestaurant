@@ -14,11 +14,10 @@ import java.util.Scanner;
 public class skerestaurant {
 
 	static double total = 0.0;
-
-	static Food[] menu = new Food[RestaurantManager.menu.size()];
+	static RestaurantManager manager = new RestaurantManager();
+	static Food[] menu = new Food[manager.addMenu().size()];
 
 	static int[] quantity;
-	static RestaurantManager manager = new RestaurantManager();
 	static Scanner sc = new Scanner(System.in);
 
 	public static boolean choiceNum(String choice) {
@@ -34,7 +33,7 @@ public class skerestaurant {
 
 	public static void printMenu() {
 
-		menu = RestaurantManager.menu.toArray(menu);
+		menu = manager.addMenu().toArray(menu);
 		quantity = new int[menu.length];
 		System.out.println("--------- Welcome to SKE Restaurant ---------");
 		for (int i = 0; i < menu.length; i++) {
@@ -143,7 +142,6 @@ public class skerestaurant {
 	}
 
 	public static void main(String[] args) {
-		manager.readFile(manager.openFile());
 		printMenu();
 		inputMoney();
 	}

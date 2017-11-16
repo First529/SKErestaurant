@@ -13,20 +13,21 @@ import java.util.*;
 
 public class RestaurantManager {
 	
-	static ArrayList<Food> menu = new ArrayList<Food>();
+//	static ArrayList<Food> menu = new ArrayList<Food>();
 	private Scanner sc;
+	private static ArrayList<Food> menu;
+	private static final String LOCATION = "first/menu.txt";
+	private static ClassLoader loader = RestaurantManager.class.getClassLoader();
 	
-	static final String LOCATION = "first/menu.txt";
-	static ClassLoader loader = RestaurantManager.class.getClassLoader();
-	
-	public InputStream openFile() {
-		InputStream input = loader.getResourceAsStream(LOCATION);
+	public InputStream openFile(String location) {
+		InputStream input = loader.getResourceAsStream(location);
 		
 		return input;
 	}
 	
-	public void readFile(InputStream temp) {
-		sc = new Scanner(temp);
+	public ArrayList<Food> addMenu() {
+		ArrayList<Food> menu = new ArrayList<Food>();
+		sc = new Scanner(openFile(LOCATION));
 		while(sc.hasNextLine()){
 			String x = sc.nextLine();
 			if (x.startsWith("#") || x.startsWith("-")) {
@@ -36,7 +37,8 @@ public class RestaurantManager {
 			}
 		}
 		sc.close();
+		return menu;
 	}
-	
+		
 }
 
